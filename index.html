@@ -63,7 +63,7 @@
 
       <!-- Email Form -->
       <form id="emailForm" class="flex flex-col md:flex-row gap-4 justify-center">
-        <input type="text" id="userEmail" placeholder="Enter your email" required
+        <input type="email" id="userEmail" placeholder="Enter your email" required
                class="px-4 py-3 rounded-lg border border-gray-300 flex-1" />
         <button type="submit"
                 class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer">
@@ -90,8 +90,8 @@
       const emailInput = document.getElementById('userEmail');
       const downloadSection = document.getElementById('downloadSection');
       const statusMsg = document.getElementById('statusMsg');
+
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVVP3RYA2fRmWbWp1Jl39JT1W7H4x1sY1QVHAdrj3VmlIuitDsLigEnnF97WMTvQAH-w/exec";
-      const PDF_LINK = "https://drive.google.com/file/d/15QCCJJ8fx-Dhf_mnjCi_xo8euCCoKGje/view";
 
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -118,13 +118,11 @@
             headers: {'Content-Type':'application/x-www-form-urlencoded'}
           });
 
-          // Hide form, show download
+          // Hide form, show download button only
           form.style.display = 'none';
           downloadSection.classList.remove('hidden');
 
-          // Auto-download PDF
-          window.open(PDF_LINK, "_blank");
-          statusMsg.textContent = "Success! Your download should start shortly.";
+          statusMsg.textContent = "Success! Click the button below to download your PDF.";
           statusMsg.style.color = "green";
 
         } catch (err) {
@@ -150,4 +148,5 @@
 
 </body>
 </html>
+
 
