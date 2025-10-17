@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -55,73 +55,24 @@
     </div>
   </section>
 
-  <!-- Free Sample PDF Section -->
+  <!-- Email Opt-in / Download -->
   <section class="bg-red-50 py-16 px-6">
     <div class="max-w-xl mx-auto text-center">
       <h2 class="text-2xl font-bold mb-4">Get a Free Sample Quest!</h2>
-      <p class="mb-6">Enter your email to receive the free comic-style sample and start your child's wacky learning adventure today.</p>
+      <p class="mb-6">Enter your email to download a free comic-style sample from the book.</p>
 
-      <!-- Email Form -->
-      <form id="emailForm" class="flex flex-col md:flex-row gap-4 justify-center">
-        <input type="email" id="userEmail" placeholder="Enter your email" required
-               class="px-4 py-3 rounded-lg border border-gray-300 flex-1" />
-        <button type="submit"
-                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer">
-          Get PDF
+      <form id="downloadForm" class="flex flex-col md:flex-row gap-4 justify-center">
+        <input type="email" id="emailInput" class="px-4 py-3 rounded-lg border border-gray-300 flex-1" placeholder="Enter your email" required>
+        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold cursor-pointer">
+          Send Me the Free Sample
         </button>
       </form>
 
-      <!-- Download Button (hidden until valid email submitted) -->
-      <div id="downloadSection" class="mt-6 hidden">
-        <a href="https://drive.google.com/file/d/15QCCJJ8fx-Dhf_mnjCi_xo8euCCoKGje/view?usp=drive_link" 
-           target="_blank"
-           class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition inline-block">
-           Download Free Sample PDF
-        </a>
-        <p class="text-xs text-gray-500 mt-4 italic">
-          *This PDF is a comic-style version of the book. The actual book may differ.
-        </p>
-      </div>
+      <p id="errorMsg" class="text-red-600 mt-3 hidden">Please enter a valid email address.</p>
+      <p id="successMsg" class="text-green-600 mt-3 hidden">Thank you! Your download will start shortly.</p>
+
+      <p class="text-xs text-gray-500 mt-4">*This PDF is a comic version of the book. The full book is different.</p>
     </div>
-
-    <script>
-      const form = document.getElementById('emailForm');
-      const emailInput = document.getElementById('userEmail');
-      const downloadSection = document.getElementById('downloadSection');
-
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const email = emailInput.value.trim();
-
-        // Basic email validation
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-          alert('Please enter a valid email address.');
-          return;
-        }
-
-        try {
-          // Send email to Google Sheets (background POST)
-          await fetch('https://script.google.com/macros/s/AKfycbxVVP3RYA2fRmWbWp1Jl39JT1W7H4x1sY1QVHAdrj3VmlIuitDsLigEnnF97WMTvQAH-w/exec', {
-            method: 'POST',
-            mode: 'no-cors', // prevents CORS errors
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `email=${encodeURIComponent(email)}`
-          });
-
-          // Hide form, show download button
-          form.style.display = 'none';
-          downloadSection.classList.remove('hidden');
-
-          // Open PDF in new tab
-          window.open("https://drive.google.com/file/d/15QCCJJ8fx-Dhf_mnjCi_xo8euCCoKGje/view?usp=drive_link", "_blank");
-
-        } catch (err) {
-          alert('There was an error submitting your email. Please try again.');
-          console.error(err);
-        }
-      });
-    </script>
   </section>
 
   <!-- About Author -->
@@ -135,6 +86,30 @@
   <footer class="bg-black text-gray-400 text-center py-6">
     <p>c 2025 Kids' Wacky Chinese Phonetics Quest. All rights reserved.</p>
   </footer>
+
+  <script>
+    document.getElementById("downloadForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const email = document.getElementById("emailInput").value.trim();
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      const errorMsg = document.getElementById("errorMsg");
+      const successMsg = document.getElementById("successMsg");
+
+      if (!emailRegex.test(email)) {
+        errorMsg.classList.remove("hidden");
+        successMsg.classList.add("hidden");
+        return;
+      }
+
+      errorMsg.classList.add("hidden");
+      successMsg.classList.remove("hidden");
+
+      // Auto download the PDF
+      setTimeout(() => {
+        window.open("https://docs.google.com/spreadsheets/d/1uMco9LdNY572mpWJDw9qGvvrXLuoI_97dwtQs1qb8vY/export?format=pdf", "_blank");
+      }, 1500);
+    });
+  </script>
 
 </body>
 </html>
