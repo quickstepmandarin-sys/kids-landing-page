@@ -71,27 +71,17 @@
         </button>
       </form>
 
-      <!-- Status / Download -->
+      <!-- Status Message -->
       <p id="statusMsg" class="mt-3 text-xs hidden"></p>
-      <div id="downloadSection" class="mt-6 hidden">
-        <a href="https://drive.google.com/uc?export=download&id=15QCCJJ8fx-Dhf_mnjCi_xo8euCCoKGje" 
-           target="_blank"
-           class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition inline-block">
-           Download Free Sample PDF
-        </a>
-        <p class="text-xs text-gray-500 mt-4 italic">
-          *This PDF is a comic-style version of the book. The actual book may differ.
-        </p>
-      </div>
     </div>
 
     <script>
       const form = document.getElementById('emailForm');
       const emailInput = document.getElementById('userEmail');
-      const downloadSection = document.getElementById('downloadSection');
       const statusMsg = document.getElementById('statusMsg');
 
       const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxVVP3RYA2fRmWbWp1Jl39JT1W7H4x1sY1QVHAdrj3VmlIuitDsLigEnnF97WMTvQAH-w/exec";
+      const PDF_LINK = "https://drive.google.com/uc?export=download&id=15QCCJJ8fx-Dhf_mnjCi_xo8euCCoKGje";
 
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -111,19 +101,25 @@
         statusMsg.classList.remove("hidden");
 
         try {
-          // Send email to Google Script (no-cors)
+          // Send email to Google Script
           await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email), {
             method: 'POST',
             mode: 'no-cors',
             headers: {'Content-Type':'application/x-www-form-urlencoded'}
           });
 
-          // Hide form, show download button only
+          // Hide form
           form.style.display = 'none';
-          downloadSection.classList.remove('hidden');
-
-          statusMsg.textContent = "Success! Click the button below to download your PDF.";
+          statusMsg.textContent = "Success! Your PDF will download shortly.";
           statusMsg.style.color = "green";
+
+          // Auto-download PDF
+          const link = document.createElement('a');
+          link.href = PDF_LINK;
+          link.download = "Kids_Wacky_Chinese_Phonetics_Quest_Sample.pdf";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
 
         } catch (err) {
           statusMsg.textContent = "Error submitting your email. Please try again later.";
@@ -148,5 +144,3 @@
 
 </body>
 </html>
-
-
