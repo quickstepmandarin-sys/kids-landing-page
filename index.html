@@ -5,6 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kids' Wacky Chinese Phonetics Quest</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes bubbleFloat {
+      0% { transform: translateY(0px) scale(1); opacity: 0.9; }
+      50% { transform: translateY(-15px) scale(1.05); opacity: 1; }
+      100% { transform: translateY(0px) scale(1); opacity: 0.9; }
+    }
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+    .bubble {
+      animation: bubbleFloat 4s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body class="bg-gray-50 font-sans">
 
@@ -36,6 +54,27 @@
     </div>
   </section>
 
+  <!-- Animated PandaBot Section -->
+  <section class="relative overflow-hidden bg-gradient-to-r from-yellow-400 via-red-400 to-pink-500 text-white text-center py-20 px-6">
+    <div class="absolute top-0 left-0 right-0 h-full opacity-10 pointer-events-none">
+      <div class="absolute top-10 left-10 text-5xl bubble">💬</div>
+      <div class="absolute bottom-10 right-12 text-6xl bubble" style="animation-delay:1s;">💭</div>
+      <div class="absolute top-1/2 left-1/2 text-7xl floating" style="animation-delay:2s;">🐼</div>
+    </div>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+      <h2 class="text-4xl font-extrabold mb-4 drop-shadow-lg">🎙️ Meet PandaBot — Your Free Chinese Conversation Buddy!</h2>
+      <p class="text-lg md:text-xl mb-8">
+        Practice real Chinese conversations anytime, anywhere — 100% free, fun, and designed for learners of all ages.  
+        Chat, listen, and learn naturally while PandaBot keeps it friendly and encouraging!
+      </p>
+      <a href="https://pandabot-voice.vercel.app/" 
+         class="inline-block bg-white text-black font-bold px-10 py-4 rounded-full text-lg hover:scale-110 hover:bg-gray-100 transition transform shadow-xl">
+         🚀 Try PandaBot Free
+      </a>
+    </div>
+  </section>
+
   <!-- Benefits Section -->
   <section class="bg-white py-16 px-6">
     <h2 class="text-3xl font-bold text-center mb-10">Why Kids & Parents Love It</h2>
@@ -61,7 +100,6 @@
       <h2 class="text-2xl font-bold mb-4">Get a Free Sample Quest!</h2>
       <p class="mb-6">Enter your email to receive the free comic-style sample and start your child's wacky learning adventure today.</p>
 
-      <!-- Email Form -->
       <form id="emailForm" class="flex flex-col md:flex-row gap-4 justify-center">
         <input type="email" id="userEmail" placeholder="Enter your email" required
                class="px-4 py-3 rounded-lg border border-gray-300 flex-1" />
@@ -71,7 +109,6 @@
         </button>
       </form>
 
-      <!-- Status Message -->
       <p id="statusMsg" class="mt-3 text-xs hidden"></p>
     </div>
 
@@ -87,7 +124,6 @@
         e.preventDefault();
         const email = emailInput.value.trim();
 
-        // Basic email validation
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(email)) {
           statusMsg.textContent = "Please enter a valid email address.";
@@ -101,19 +137,16 @@
         statusMsg.classList.remove("hidden");
 
         try {
-          // Send email to Google Script
           await fetch(GOOGLE_SCRIPT_URL + "?email=" + encodeURIComponent(email), {
             method: 'POST',
             mode: 'no-cors',
             headers: {'Content-Type':'application/x-www-form-urlencoded'}
           });
 
-          // Hide form
           form.style.display = 'none';
           statusMsg.textContent = "Success! Your PDF will download shortly.";
           statusMsg.style.color = "green";
 
-          // Auto-download PDF
           const link = document.createElement('a');
           link.href = PDF_LINK;
           link.download = "Kids_Wacky_Chinese_Phonetics_Quest_Sample.pdf";
@@ -138,8 +171,13 @@
   </section>
 
   <!-- Footer -->
-  <footer class="bg-black text-gray-400 text-center py-6">
-    <p>© 2025 Kids' Wacky Chinese Phonetics Quest. All rights reserved.</p>
+  <footer class="bg-black text-gray-300 text-center py-10">
+    <p class="mb-4">© 2025 Kids' Wacky Chinese Phonetics Quest. All rights reserved.</p>
+    <div class="flex justify-center space-x-6 text-2xl">
+      <a href="https://pandabot-voice.vercel.app/" class="hover:text-yellow-400 transition transform hover:scale-125">🤖</a>
+      <a href="https://www.amazon.com/dp/B0FRQKHD2Q" class="hover:text-red-400 transition transform hover:scale-125">📘</a>
+      <a href="mailto:hello@quickstepmandarin.com" class="hover:text-pink-400 transition transform hover:scale-125">💌</a>
+    </div>
   </footer>
 
 </body>
